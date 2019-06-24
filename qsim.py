@@ -1,3 +1,5 @@
+#AKP
+
 import random
 import numpy as np
 
@@ -9,13 +11,16 @@ def check_all_ones(ls):
 
 class QuarterGame:
     def __init__(self):
+        #ones represent heads, zeros represent tails
         self.TL = 0
         self.TR = 0
         self.BL = 0
         self.BR = 0
     def random_init(self):
+        #create a game, with some state that doesn't have all ones
         ls = [0,0,0,0]
-        while (check_all_zero(ls) or check_all_ones(ls)):
+        ls = [random.randint(0,1) for x in ls]
+        while (check_all_ones(ls)):
             ls = [random.randint(0,1) for x in ls]
         self.TL = ls[0]
         self.TR = ls[1]
@@ -23,13 +28,14 @@ class QuarterGame:
         self.BR = ls[3]
 
     def print_state(self):
+        #testing function to see if everything under the hood is good
         tl = self.TL
         tr = self.TR
         bl = self.BL
         br = self.BR
         ls = [tl, tr, bl, br]
         print(ls)
-
+    #each following flip function changes the state of the game
     def flip_TL(self):
         self.TL = not(self.TL)
         #self.print_state()
@@ -47,6 +53,8 @@ class QuarterGame:
         #self.print_state()
 
     def rotate_random(self):
+        #rotates the board 0, 90, 80, 0r 270 degrees
+        #uniformly picks one of the above
         mult90 = random.randint(1, 4) #choose from 1-4 multiples of 90 cw
         tl = self.TL
         tr = self.TR
@@ -73,6 +81,7 @@ class QuarterGame:
 
 
     def win(self):
+        #stop condition, when all heads
         tl = self.TL
         tr = self.TR
         bl = self.BL
@@ -85,6 +94,7 @@ class QuarterGame:
         self.random_init()
         #strategy here
         #self.print_state()
+        #simulate 500 moves, but stop if we win somewhere
         for x in range(500):
             if not(self.win()):
                 self.flip_TL()
@@ -93,6 +103,8 @@ class QuarterGame:
                 it = x
                 break
         if not(self.win()):
+            #if we don't win by 500, it is reasonable to assume our strategy
+            #doesn't work
             print("Failure to win in 1000 steps")
         #self.print_state()
         return x
@@ -108,3 +120,5 @@ print(np.mean(ls))
 print(np.std(ls))
 print(np.min(ls))
 print(np.max(ls))
+
+#looks like our strategy works, since none of the 10000 games failed!
