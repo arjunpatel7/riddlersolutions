@@ -105,7 +105,7 @@ class QuarterGame:
         if not(self.win()):
             #if we don't win by 500, it is reasonable to assume our strategy
             #doesn't work
-            print("Failure to win in 1000 steps")
+            print("Failure to win in 500 steps")
         #self.print_state()
         return x
 
